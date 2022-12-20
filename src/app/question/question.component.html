@@ -1,0 +1,74 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="d-flex justify-content-between p-3">
+            <div class="image">
+                <img src="https://img.icons8.com/color/96/000000/angularjs.png" width="90" alt="logo">
+            </div>
+            <div class="quiz-header">
+                <h4 style="font-family:cursive;">Angular & TypeScript Quiz.</h4>
+                <span style="font-style:italic ;" >Welcome {{name}}</span>
+            </div>
+        </div>
+       
+        <ng-container *ngIf="!isQuizCompleted">
+
+                <div class="d-flex justify-content-around py-3">
+                    <div class="score">
+                        <h5>{{points}}</h5>
+                    </div>
+                    <div class="question-remain">
+                        <span style="font-style:italic;" >Question {{currentQuestion+1}} of {{(questionList.length)+1}}</span>
+                    </div>
+                    <div class="timer">
+                        <h5>{{counter}} sec <i class="fa fa-clock-o"></i></h5>
+                    </div>
+                </div>
+
+                <div class="progress mb-3 mx-1">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [ngStyle]="{'width':progress+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <div class="quetion">
+                    <div class="card">
+                        <h3>{{questionList[currentQuestion]?.questionText}}</h3>
+                    </div>
+                </div>
+
+                <div class="options">
+                    <ol *ngFor="let option of questionList[currentQuestion]?.options">
+                        <li (click)="answer(currentQuestion+1, option)">
+                            <div appChangebg [isCorrect]="option.correct" class="card">
+                                {{option.text}}
+                            </div>
+                        </li>
+                    </ol>
+
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button [disabled]="currentQuestion===0" (click)="previousQuestion()" class="btn"><i class="fa fa-chevron-left text-primary fa-3x" aria-hidden="true"></i></button>
+                    <button (click)="resetQuiz()" class="btn"><i class="fa fa-refresh text-primary fa-3x" aria-hidden="true"></i></button>
+                    <button (click)="nextQuestion()" class="btn"><i class="fa fa-chevron-right text-primary fa-3x" aria-hidden="true"></i></button>
+                
+                </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="isQuizCompleted">
+            <div class="row d-flex justfy-content-between">
+                <img style="width: 50%;" class="img-fluid col-sm-12 mx-auto" src="data:image/jpeg;base64,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" alt="logo">
+                <div class="result text-center col-md-6 col-sm-12">
+                    <h3>Congratulations!! <br> You hav completed the quiz. <br>Below is your result:</h3>
+                    <p>Total Questions attempted:{{questionList.length}}</p>
+                    <p>Total Correct Answered:{{correctAnswer}}</p>
+                    <p>Total Wrong Answered:{{inCorrectAnswer}} </p>
+                    <p>Your Score:{{points}} points </p>
+                </div>
+                            
+
+
+            </div>
+        </ng-container>
+
+    </div>
+</div>
